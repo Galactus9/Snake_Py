@@ -1,20 +1,15 @@
 from tkinter import *
 import random
 
-
 # const virables
 GAME_WIDTH = 1400
 GAME_HEIGHT = 700
-GAME_SPEED = 80
+GAME_SPEED = 100
 SPACE_SIZE = 20
-BODY_PARTS = 4
+BODY_PARTS = 94
 SNAKE_COLOR = "green"
 FOOD_COLOR = "purple"
 BACKGROUND_COLOR = "black"
-
-
-
-
 
 
 class Snake:
@@ -30,17 +25,22 @@ class Snake:
             square = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=SNAKE_COLOR, tag="snake")
             self.squares.append(square)
 
-
 class Food:
-    def __init__(self):
+    def __init__(self, snake):
         
         x = random.randint(0, GAME_WIDTH/SPACE_SIZE-1) * SPACE_SIZE
         y = random.randint(0, GAME_HEIGHT/SPACE_SIZE-1) * SPACE_SIZE
+
+        #while True:
+            #for z,k in snake.coordinates:
+                    #if x == z and y == k :
+                           #x = random.randint(0, GAME_WIDTH/SPACE_SIZE-1) * SPACE_SIZE
+                           # y = random.randint(0, GAME_HEIGHT/SPACE_SIZE-1) * SPACE_SIZE
+                    #else: break
         
         self.coordinates = [x , y]
 
         canvas.create_oval(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=FOOD_COLOR, tag="food")
-
 
 def next_turn(snake, food):
     
@@ -73,7 +73,7 @@ def next_turn(snake, food):
 
         canvas.delete("food")
 
-        food = Food()
+        food = Food(snake)
     else:
         del snake.coordinates[-1]
 
@@ -126,7 +126,6 @@ def game_over():
     canvas.create_text(canvas.winfo_width()/2, canvas.winfo_height()/2,
                        font=('consolas', 70), text="GAME OVER", fill="red", tag="gameOver")
 
-
 window = Tk()
 window.title("Snake game")
 
@@ -158,8 +157,8 @@ window.bind('<Down>', lambda event: change_direction('down'))
 window.bind('<Up>', lambda event: change_direction('up'))
 
 
-food = Food()
 snake = Snake()
+food = Food(snake)
 
 next_turn(snake,food)
 
